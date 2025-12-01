@@ -1,0 +1,92 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.conda/
+pip-wheel-metadata/
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+*.key
+
+# =========================
+# Logs / runtime
+# =========================
+*.log
+logs/
+*.tmp
+
+# =========================
+# SQLite / local DBs
+# =========================
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*-journal
+*-wal
+*-shm
+
+# If you DO want to keep a sample DB schema, export it and commit that instead.
+
+# =========================
+# PyInstaller
+# =========================
+build/
+dist/
+*.spec
+
+# =========================
+# Testing / tooling
+# =========================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.tox/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# OS / Editor
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# JetBrains
+.idea/
+
+# =========================
+# Project-specific (optional)
+# =========================
+# If you generate assets, exports, plots, etc.
+outputs/
+exports/
