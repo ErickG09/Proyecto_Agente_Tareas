@@ -10,7 +10,6 @@
 ![PyQt6](https://img.shields.io/badge/UI-PyQt6-41CD52)
 ![SQLite](https://img.shields.io/badge/DB-SQLite-003B57)
 ![Gemini](https://img.shields.io/badge/LLM-Gemini-orange)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 > **Profesor Asesor** es una aplicación de escritorio para estudiar materias de ingeniería con:
 > - Interfaz profesional (panel de control + chat)
@@ -18,22 +17,6 @@
 > - **Herramientas** determinísticas (/calc, /deriva, /integra, /u, /stats, /plot…)
 > - **Memoria en SQLite** por usuario (historial + contexto reciente)
 > - **Quiz** con opción múltiple (Gemini + fallback local)
-
----
-
-## Tabla de contenido
-- [Características](#-características)
-- [Demo / Capturas](#-demo--capturas)
-- [Arquitectura del proyecto](#-arquitectura-del-proyecto)
-- [Instalación](#-instalación)
-- [Configuración (.env)](#-configuración-env)
-- [Uso rápido](#-uso-rápido)
-- [Comandos disponibles](#-comandos-disponibles)
-- [Cómo funciona la memoria (SQLite)](#-cómo-funciona-la-memoria-sqlite)
-- [Cómo funciona el Quiz](#-cómo-funciona-el-quiz)
-- [Troubleshooting](#-troubleshooting)
-- [Roadmap](#-roadmap)
-- [Licencia](#-licencia)
 
 ---
 
