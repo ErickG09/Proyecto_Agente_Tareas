@@ -42,6 +42,45 @@ class QuizState:
 
 
 # ================================
+# Restricción de materias soportadas
+# ================================
+
+SUPPORTED_SUBJECTS = {
+    "Cálculo",
+    "Física",
+    "Química",
+    "Álgebra Lineal",
+    "Probabilidad y Estadística",
+    "Programación",
+}
+
+def _norm(s: str) -> str:
+    s = (s or "").strip().lower()
+    # normalización ligera (sin depender de librerías extra)
+    s = s.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u").replace("ü", "u").replace("ñ", "n")
+    s = re.sub(r"\s+", " ", s)
+    return s
+
+def _canonical_subject(s: str) -> str:
+    t = _norm(s)
+    aliases = {
+        "calculo": "Cálculo",
+        "calculo diferencial": "Cálculo",
+        "calculo integral": "Cálculo",
+        "fisica": "Física",
+        "quimica": "Química",
+        "algebra lineal": "Álgebra Lineal",
+        "algebra": "Álgebra Lineal",
+        "probabilidad": "Probabilidad y Estadística",
+        "estadistica": "Probabilidad y Estadística",
+        "probabilidad y estadistica": "Probabilidad y Estadística",
+        "programacion": "Programación",
+        "programación": "Programación",
+    }
+    return aliases.get(t, s.strip())
+
+
+# ================================
 # Backend
 # ================================
 
@@ -110,9 +149,37 @@ class Backend(QtCore.QObject):
             self.responseReady.emit(qflow)
             return
 
+        # 2.5) FILTRO: solo responder materias soportadas (evita "chat genérico")
+        explicit_subject = (self.state.subject or "").strip()
+        canonical_explicit = _canonical_subject(explicit_subject)
+
+        if explicit_subject != "General" and canonical_explicit not in SUPPORTED_SUBJECTS:
+            self.responseReady.emit(
+                "Por ahora solo estoy configurado para materias académicas específicas:\n"
+                "• Cálculo\n• Física\n• Química\n• Álgebra Lineal\n• Probabilidad y Estadística\n• Programación\n\n"
+                "Cambia la materia en el panel o usa `/materia <nombre>`."
+            )
+            return
+
+        if explicit_subject == "General":
+            guessed = _canonical_subject(self._guess_subject(user_text))
+            if guessed not in SUPPORTED_SUBJECTS:
+                self.responseReady.emit(
+                    "Solo respondo temas académicos (Cálculo, Física, Química, Álgebra Lineal, "
+                    "Probabilidad/Estadística y Programación).\n"
+                    "Tip: selecciona una materia en el panel o escribe, por ejemplo: `/materia Calculo`."
+                )
+                return
+            # si sí adivinó una materia válida, ya la fijamos
+            self.state.subject = guessed
+        else:
+            # si ya venía algo, lo canonizamos por si venía sin acentos
+            self.state.subject = canonical_explicit
+
         # 3) Respuesta normal con LLM + memoria controlada
-        if self.state.subject == "General":
-            self.state.subject = self._guess_subject(user_text)
+        if (self.state.topic or "").strip().lower() in ("-", "", "general"):
+            self.state.topic = self._guess_topic(user_text)
+
         if (self.state.topic or "").strip().lower() in ("-", "", "general"):
             self.state.topic = self._guess_topic(user_text)
 
